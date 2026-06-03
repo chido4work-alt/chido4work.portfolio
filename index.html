@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Chi Đỗ — Strategist-to-Execution Connector</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --beige: #F5F0E8;
+    --beige-dark: #E8E0D0;
+    --brown: #8B6F47;
+    --brown-light: #C4A882;
+    --navy: #1B3A5C;
+    --navy-mid: #2A5580;
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --white: #FDFCF9;
+    --text-dark: #1A1A1A;
+    --text-mid: #4A4A4A;
+    --text-muted: #8A8A8A;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--white);
+    color: var(--text-dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(253,252,249,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--beige-dark);
+    padding: 0 48px;
+    height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 18px;
+    color: var(--navy);
+    letter-spacing: 0.02em;
+  }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-mid);
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--navy); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    padding: 120px 48px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    background: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px; right: -200px;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: var(--beige);
+    z-index: 0;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: 100px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.08);
+    z-index: 0;
+  }
+  .hero-text { position: relative; z-index: 1; }
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 32px; height: 1px;
+    background: var(--gold);
+    display: inline-block;
+  }
+  .hero-name {
+    font-family: var(--font-display);
+    font-size: clamp(40px, 5vw, 64px);
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(13px, 1.5vw, 16px);
+    font-style: italic;
+    color: var(--brown);
+    letter-spacing: 0.04em;
+    margin-bottom: 32px;
+  }
+  .hero-title strong {
+    font-style: normal;
+    color: var(--navy);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    font-family: var(--font-body);
+    font-size: 11px;
+    text-transform: uppercase;
+    border: 1px solid var(--navy);
+    padding: 4px 12px;
+    border-radius: 2px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 8px;
+  }
+  .hero-summary {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--text-mid);
+    max-width: 480px;
+    margin-bottom: 40px;
+  }
+  .hero-cta {
+    display: flex; gap: 16px; flex-wrap: wrap;
+  }
+  .btn-primary {
+    display: inline-block;
+    padding: 12px 28px;
+    background: var(--navy);
+    color: var(--white);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    transition: background 0.2s;
+    cursor: pointer; border: none;
+  }
+  .btn-primary:hover { background: var(--navy-mid); }
+  .btn-outline {
+    display: inline-block;
+    padding: 12px 28px;
+    border: 1px solid var(--navy);
+    color: var(--navy);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    transition: all 0.2s;
+    cursor: pointer; background: transparent;
+  }
+  .btn-outline:hover { background: var(--navy); color: var(--white); }
+
+  .hero-visual {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column; gap: 20px;
+  }
+  .stat-card {
+    background: var(--beige);
+    border-radius: 4px;
+    padding: 24px 28px;
+    display: flex; align-items: center; gap: 20px;
+    border-left: 3px solid var(--gold);
+  }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1;
+    min-width: 64px;
+  }
+  .stat-label { font-size: 13px; color: var(--text-mid); line-height: 1.5; }
+
+  /* SECTION BASE */
+  section { padding: 100px 48px; }
+  .section-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 3vw, 40px);
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.2;
+    margin-bottom: 48px;
+  }
+
+  /* EXPERTISE */
+  .expertise { background: var(--beige); }
+  .expertise-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: var(--beige-dark);
+  }
+  .expertise-item {
+    background: var(--beige);
+    padding: 36px 32px;
+    transition: background 0.2s;
+  }
+  .expertise-item:hover { background: var(--white); }
+  .expertise-icon { font-size: 28px; margin-bottom: 16px; }
+  .expertise-name {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 10px;
+  }
+  .expertise-desc {
+    font-size: 13px;
+    color: var(--text-mid);
+    line-height: 1.7;
+  }
+
+  /* PROJECTS */
+  .projects { background: var(--white); }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  .project-card {
+    border: 1px solid var(--beige-dark);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+  .project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(27,58,92,0.1);
+  }
+  .project-thumb {
+    height: 180px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-body { padding: 24px; }
+  .project-tag {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--brown);
+    margin-bottom: 8px;
+  }
+  .project-name {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+  .project-desc {
+    font-size: 13px;
+    color: var(--text-mid);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag {
+    font-size: 11px;
+    background: var(--beige);
+    color: var(--brown);
+    padding: 4px 10px;
+    border-radius: 2px;
+    border: 1px solid var(--beige-dark);
+  }
+
+  /* EXPERIENCE */
+  .experience { background: var(--navy); }
+  .experience .section-label { color: var(--gold-light); }
+  .experience .section-title { color: var(--white); }
+  .timeline { display: flex; flex-direction: column; }
+  .timeline-item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 40px;
+    padding: 32px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    position: relative;
+  }
+  .timeline-item:last-child { border-bottom: none; }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 198px; top: 36px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--gold);
+    z-index: 1;
+  }
+  .timeline-date {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    padding-top: 2px;
+    text-align: right;
+  }
+  .timeline-role {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .timeline-company {
+    font-size: 13px;
+    color: var(--gold-light);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .timeline-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.7;
+  }
+
+  /* CONTACT */
+  .contact { background: var(--beige); text-align: center; }
+  .contact .section-title { margin-bottom: 16px; }
+  .contact-sub {
+    font-size: 15px; color: var(--text-mid);
+    max-width: 480px; margin: 0 auto 40px;
+    line-height: 1.8;
+  }
+  .contact-links {
+    display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
+  }
+  .contact-link {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 500;
+    color: var(--navy); text-decoration: none;
+    letter-spacing: 0.04em;
+    padding: 10px 20px;
+    border: 1px solid var(--navy);
+    border-radius: 2px;
+    transition: all 0.2s;
+  }
+  .contact-link:hover { background: var(--navy); color: var(--white); }
+
+  /* FOOTER */
+  footer {
+    background: var(--navy);
+    padding: 24px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+  }
+  footer span:last-child { color: var(--gold); font-weight: 500; }
+
+  @media (max-width: 900px) {
+    nav { padding: 0 24px; }
+    .nav-links { gap: 20px; }
+    .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; gap: 48px; }
+    section { padding: 72px 24px; }
+    .expertise-grid { grid-template-columns: 1fr 1fr; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .timeline-item { grid-template-columns: 1fr; gap: 8px; }
+    .timeline-item::before { display: none; }
+    .timeline-date { text-align: left; }
+    footer { flex-direction: column; gap: 8px; text-align: center; }
+  }
+
+  @media (max-width: 600px) {
+    .expertise-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Chi Đỗ</div>
+  <ul class="nav-links">
+    <li><a href="#expertise">Expertise</a></li>
+    <li><a href="#projects">Work</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-text">
+    <div class="hero-eyebrow">Marketing Strategist</div>
+    <h1 class="hero-name">Chi Đỗ</h1>
+    <p class="hero-title">
+      a <strong>Strategist-to-Execution Connector</strong>
+    </p>
+    <p class="hero-summary">
+      Strategic marketer with a strong foundation in agency planning and practical client-side experience.
+      Skilled in connecting strategy, creativity, and execution to drive brand growth, customer engagement, and business objectives.
+    </p>
+    <div class="hero-cta">
+      <a class="btn-primary" href="#projects">View My Work</a>
+      <a class="btn-outline" href="#contact">Get In Touch</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="stat-card">
+      <div class="stat-num">5+</div>
+      <div class="stat-label">Years in Marketing<br><span style="color:#8A8A8A;font-size:12px">Agency & Client-side</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">360°</div>
+      <div class="stat-label">Brand Strategy Approach<br><span style="color:#8A8A8A;font-size:12px">From Insight to Execution</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Connecting the Dots<br><span style="color:#8A8A8A;font-size:12px">Strategy · Creativity · Results</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERTISE -->
+<section class="expertise" id="expertise">
+  <div class="section-label">What I Do</div>
+  <h2 class="section-title">Core Expertise</h2>
+  <div class="expertise-grid">
+    <div class="expertise-item">
+      <div class="expertise-icon">🎯</div>
+      <div class="expertise-name">Brand Strategy</div>
+      <div class="expertise-desc">Translating business objectives into compelling brand stories and go-to-market strategies that resonate with target audiences.</div>
+    </div>
+    <div class="expertise-item">
+      <div class="expertise-icon">📊</div>
+      <div class="expertise-name">Campaign Planning</div>
+      <div class="expertise-desc">End-to-end integrated marketing campaigns — from audience insight and ideation through to execution and measurement.</div>
+    </div>
+    <div class="expertise-item">
+      <div class="expertise-icon">🤝</div>
+      <div class="expertise-name">Strategy-to-Execution</div>
+      <div class="expertise-desc">Bridging the gap between big-picture strategy and on-the-ground execution, ensuring creative and operational alignment.</div>
+    </div>
+    <div class="expertise-item">
+      <div class="expertise-icon">💡</div>
+      <div class="expertise-name">Consumer Insight</div>
+      <div class="expertise-desc">Translating data and research into human-centered insights that fuel relevant, effective marketing decisions.</div>
+    </div>
+    <div class="expertise-item">
+      <div class="expertise-icon">✍️</div>
+      <div class="expertise-name">Content & Messaging</div>
+      <div class="expertise-desc">Crafting consistent, purposeful brand voice and messaging frameworks across touchpoints and channels.</div>
+    </div>
+    <div class="expertise-item">
+      <div class="expertise-icon">🔗</div>
+      <div class="expertise-name">Cross-team Collaboration</div>
+      <div class="expertise-desc">Working across creative, media, digital, and client teams to deliver cohesive, business-driving marketing programs.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects" id="projects">
+  <div class="section-label">Selected Work</div>
+  <h2 class="section-title">Projects & Campaigns</h2>
+  <div class="projects-grid">
+    <div class="project-card">
+      <div class="project-thumb" style="background:#EBF3FA;">🏢</div>
+      <div class="project-body">
+        <div class="project-tag">Brand Strategy</div>
+        <div class="project-name">Add Your Project Name Here</div>
+        <div class="project-desc">Add a short description of the project — the challenge, your role, and the key outcome. Keep it to 2-3 sentences.</div>
+        <div class="project-tags"><span class="tag">Brand Planning</span><span class="tag">Campaign</span></div>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-thumb" style="background:#F5F0E8;">📱</div>
+      <div class="project-body">
+        <div class="project-tag">Integrated Marketing</div>
+        <div class="project-name">Add Your Project Name Here</div>
+        <div class="project-desc">Add a short description of the project — the challenge, your role, and the key outcome. Keep it to 2-3 sentences.</div>
+        <div class="project-tags"><span class="tag">Digital</span><span class="tag">Social Media</span></div>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-thumb" style="background:#F0EAE0;">🎨</div>
+      <div class="project-body">
+        <div class="project-tag">Creative Strategy</div>
+        <div class="project-name">Add Your Project Name Here</div>
+        <div class="project-desc">Add a short description of the project — the challenge, your role, and the key outcome. Keep it to 2-3 sentences.</div>
+        <div class="project-tags"><span class="tag">Creative</span><span class="tag">Strategy</span></div>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-thumb" style="background:#EBF3FA;">📈</div>
+      <div class="project-body">
+        <div class="project-tag">Growth Marketing</div>
+        <div class="project-name">Add Your Project Name Here</div>
+        <div class="project-desc">Add a short description of the project — the challenge, your role, and the key outcome. Keep it to 2-3 sentences.</div>
+        <div class="project-tags"><span class="tag">Analytics</span><span class="tag">Performance</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="experience" id="experience">
+  <div class="section-label">Background</div>
+  <h2 class="section-title">Experience</h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-date">2022 – Present</div>
+      <div>
+        <div class="timeline-role">Senior Marketing Strategist</div>
+        <div class="timeline-company">[ Company Name ]</div>
+        <div class="timeline-desc">Add your key responsibilities and achievements here. Focus on impact — what you drove, built, or improved.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">2019 – 2022</div>
+      <div>
+        <div class="timeline-role">Marketing Planner</div>
+        <div class="timeline-company">[ Agency Name ]</div>
+        <div class="timeline-desc">Add your key responsibilities and achievements here. Focus on impact — what you drove, built, or improved.</div>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">2015 – 2019</div>
+      <div>
+        <div class="timeline-role">Bachelor of Marketing</div>
+        <div class="timeline-company">[ University Name ]</div>
+        <div class="timeline-desc">Add your degree, major, and any notable academic highlights.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="section-label">Let's Connect</div>
+  <h2 class="section-title">Get In Touch</h2>
+  <p class="contact-sub">Open to new opportunities, collaborations, and conversations about brand strategy and marketing.</p>
+  <div class="contact-links">
+    <a class="contact-link" href="mailto:your@email.com">✉ Email Me</a>
+    <a class="contact-link" href="https://linkedin.com/in/yourprofile" target="_blank">in LinkedIn</a>
+    <a class="contact-link" href="https://chido4work.my.canva.site/portfolio" target="_blank">↗ Canva Portfolio</a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 Chi Đỗ</span>
+  <span>Strategist-to-Execution Connector</span>
+</footer>
+
+</body>
+</html>
